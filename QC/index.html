@@ -25,10 +25,10 @@
 		<script src="http://code.highcharts.com/gantt/modules/networkgraph.js"></script>
 		<script type="text/javascript" src="js/high-contrast-dark.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<!-- <script type="text/javascript" src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
-		<link rel="stylesheet"
-			href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/monokai-sublime.min.css">
-			<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/monokai-sublime.min.css">
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 		</head>
 		<body>
 			<div class="reveal">
@@ -64,12 +64,39 @@
 						</section>
 						<section>
 							<h4>Let's see for ourselves</h4>
-							<p>But wait... you need data!</p>
+							<table class="stretch medium">
+								<thead>
+									<tr>
+										<td>Index</td><td>First</td><td>Second</td>
+									</tr>
+								</thead>
+								<tbody>
+										<tr><td>1</td><td>P11562_108_S8_L001_subset_1.fq.gz</td><td>P11562_108_S8_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>2</td><td>P11562_110_S9_L001_subset_1.fq.gz</td><td>P11562_110_S9_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>3</td><td>P11562_111_S10_L001_subset_1.fq.gz</td><td>P11562_111_S10_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>4</td><td>P11562_112_S11_L001_subset_1.fq.gz</td><td>P11562_112_S11_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>5</td><td>P11562_113_S12_L001_subset_1.fq.gz</td><td>P11562_113_S12_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>6</td><td>P11562_114_S13_L001_subset_1.fq.gz</td><td>P11562_114_S13_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>7</td><td>P11562_115_S14_L001_subset_1.fq.gz</td><td>P11562_115_S14_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>8</td><td>P11562_134_S31_L001_subset_1.fq.gz</td><td>P11562_134_S31_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>9</td><td>P11562_135_S32_L001_subset_1.fq.gz</td><td>P11562_135_S32_L001_subset_2.fq.gz</td></tr>
+                    <tr><td>10</td><td>P11562_136_S33_L001_subset_1.fq.gz</td><td>P11562_136_S33_L001_subset_2.fq.gz</td></tr>
+										<tr><td>11</td><td>P11562_137_S34_L001_subset_1.fq.gz</td><td>P11562_137_S34_L001_subset_2.fq.gz</td></tr>
+										<tr><td>12</td><td>P11562_138_S35_L001_subset_1.fq.gz</td><td>P11562_138_S35_L001_subset_2.fq.gz</td></tr>
+										<tr><td>13</td><td>P11562_139_S36_L001_subset_1.fq.gz</td><td>P11562_139_S36_L001_subset_2.fq.gz</td></tr>
+								</tbody>
+							</table>
+					 	  </section>
+					 	  <section>
+					 	  <h4>Some commands (finally)</h4>
 							<pre class="fragment"><code class="bash">
+#Not compressed (boo!)
+less &lt;path_to_fq&gt;
 #Gzip
 zless &lt;path_to_fq.gz&gt;
 #Bzip2
 bzless &lt;path_to_fq.bz2&gt;
+#Quit (b)(z)less with [q]
 							</code></pre>
 						</section>
 						<section>

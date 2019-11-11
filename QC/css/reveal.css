@@ -14,6 +14,11 @@
   font-size: 0.9rem !important;
 }
 
+.medium {
+  font-size: 1.5rem !important;
+}
+
+
 .box {
   background-color: rgba(120, 120, 120, 0.1);
   border: 1px solid white;
