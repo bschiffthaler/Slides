@@ -187,6 +187,11 @@ L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
 					<h4>SortmeRNA</h4>
 					<p>Software made to select <em style="text-decoration: underline;">for</em> rRNA/OTUs. We use it to remove those from our dataset.</p>
 					<p><pre><code class="bash">sortmerna -h</code></pre></p>
+					<p><pre><code class="bash">DB_HOME=/usr/share/rRNA_databases</code></pre></p>
+					<p><pre><code class="bash">echo $SORTMERNA_DB</code></pre></p>
+					<p><code>SortMeRNA</code> only reads interleaved, uncompressed files. See:</p>
+					<p><pre><code class="bash">merge-paired-reads.sh</code></pre></p>
+					<p><pre><code class="bash">unmerge-paired-reads.sh</code></pre></p>
 				</section>
 				<section>
 					<section>
@@ -228,6 +233,12 @@ a__eeeeegcgcghhiihhghhihhiiiiiiighihiihffghi_fhhhhhi
   ^^^^^: 35.8
 						</code></pre>
 					</section>
+				</section>
+				<section>
+					<h4>Bonus: <a href="https://mash.readthedocs.io/en/latest/">Mash!</a></h4>
+					<p>Mash uses efficient computational datastrucures to determine sequence similarity.</p>
+					<pre><code class="bash">mash screen -h</code></pre>
+					<pre><code class="plaintext">SKETCH_FILE=/home/training/share/Day1/reference/refseq_rna.msh</code></pre>
 				</section>
 			</div>
 		</div>
