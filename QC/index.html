@@ -177,13 +177,22 @@ L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
 				<section>
 					<h4>FastQC</h4>
 					<p><pre><code class="bash">fastqc -h</code></pre></p>
+					<ul>
+						<li>Purpose: Visualizing the quality of a single library file</li>
+						<li>Outcome: Report (html) with various QC stats for our data</li>
+					</ul>
 				</section>
 				<section>
 					<h4>MultiQC</h4>
 					<p>We want to do this after every step in this practical</p>
 					<p><pre><code class="bash">multiqc -h</code></pre></p>
+					<ul>
+						<li>Purpose: Visualizing the quality of all library files</li>
+						<li>Outcome: Summary report (html) with even more for our data</li>
+					</ul>
 				</section>
 				<section>
+					<section>
 					<h4>SortmeRNA</h4>
 					<p>Software made to select <em style="text-decoration: underline;">for</em> rRNA/OTUs. We use it to remove those from our dataset.</p>
 					<p><pre><code class="bash">sortmerna -h</code></pre></p>
@@ -194,10 +203,21 @@ L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
 					<p><pre><code class="bash">unmerge-paired-reads.sh</code></pre></p>
 				</section>
 				<section>
+					<ul>
+						<li>Purpose: Detecting and removing rRNA contamination from libraries</li>
+						<li>Outcome: A processed library filtered for reads that do not match rRNA sequences (or PhiX)</li>
+					</ul>
+				</section>
+				</section>
+				<section>
 					<section>
 					<h4>Trimmomatic</h4>
 					<p>Implements various read quality based trimmers. Best to glance over the <a href="http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf">manual</a></p>
 					<p><pre><code class="bash">trimmomatic -h</code></pre></p>
+					<ul>
+						<li>Purpose: Removing low quality reads (or parts of reads)</li>
+						<li>Outcome: A processed library filtered for reads that do not pass a quality threshold</li>
+					</ul>
 					</section>
 					<section>
 						<h4>ILLUMINACLIP</h4>
