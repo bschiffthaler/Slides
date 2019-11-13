@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>TranscriptomeAssembly</title>
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="https://code.highcharts.com/modules/sankey.js"></script>
+		<script src="https://code.highcharts.com/modules/heatmap.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="http://code.highcharts.com/gantt/modules/networkgraph.js"></script>
+		<script type="text/javascript" src="js/high-contrast-dark.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/monokai-sublime.min.css">
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Day 3 - Transcriptome Evaluation and Comparison</h2>
+					<p>Bastian Schiffthaler, Nicolas Delhomme</p>
+				</section>
+				<section>
+					<h4>Overview</h4>
+					<ul>
+						<li>What to assess</li>
+						<li>BUSCO</li>
+						<li>Detonate</li>
+						<li>TransRate</li>
+					</ul>
+				</section>
+				<section>
+					<section>
+					<h4>What can we assess</h4>
+					<ul>
+						<li class="fragment">Correctness - assembly errors</li>
+						<li class="fragment">Completeness - missing pieces?</li>
+					</ul>
+					</section>
+					<section>
+						<h4>What not to use</h4>
+						<ul>
+							<li class="fragment">Length based metrics: N50, mean length, ...</li>
+							<li class="fragment">Why?</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h4><a href="https://busco.ezlab.org/">BUSCO</a> - Benchmarking Universal Single Copy Orthologs</h4>
+						<img data-src="https://busco.ezlab.org/img/BUSCO-logo-3.png">
+						<ul>
+							<li class="fragment">Database of single copy orthologs for ancestral lines</li>
+							<li class="fragment">Expect to find many of these in the assembly</li>
+							<li class="fragment">Expect to not have duplicated matches... unless?</li>
+							<li class="fragment">Scores of >0.75 probably good</li>
+						</ul>
+					</section>
+					<section>
+						<h4>BUSCO output</h4>
+						<pre><code class="plaintext">
+C:98.1%[S:35.7%,D:62.4%],F:0.9%,M:1.0%,n:1375
+
+1349    Complete BUSCOs (C)
+491     Complete and single-copy BUSCOs (S)
+858     Complete and duplicated BUSCOs (D)
+13      Fragmented BUSCOs (F)
+13      Missing BUSCOs (M)
+1375    Total BUSCO groups searched
+						</code></pre>
+					</section>
+					<section>
+						<p>Example command</p>
+						<pre><code class="bash">
+conda activate busco
+run_BUSCO.py \
+  -i ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
+  -c 4 -m tran -o 139.orp \
+  -l /home/orp/share/Day3/reference/embryophyta_odb10
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h4><a href="http://deweylab.biostat.wisc.edu/detonate/rsem-eval.html">Detonate</a></h4>
+						<p class="fragment">Computes an assembly quality statistic from raw reads and assembled transcripts</p>
+						<p class="fragment">Can run in reference guided and reference free modes</p>
+						<p class="fragment">Computes Bayesian statistic based on the (mis)match of expected transcript coverage and observed transcript coverage</p>
+						<p class="fragment warn">You MUST use the library used for the assembly</p>
+					</section>
+					<section>
+						<p>Example command:</p>
+						<p>Step 1</p>
+						<pre><code class="bash">
+conda activate detonate
+rsem-eval-estimate-transcript-length-distribution \
+  ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
+  detonate.param
+						</code></pre>
+						<p>Step 2</p>
+						<pre><code class="bash">
+rsem-eval-calculate-score --bowtie2 -p 4 \
+  --transcript-length-parameters detonate.param --paired-end \
+  ~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_1.fq.gz \
+  ~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_2.fq.gz \
+  ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta 139_ORP 500
+						</code></pre>
+					</section>
+					<section>
+						<p>Detonate scores are always negative, but higher values (less negative) are better.</p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h4><a href="http://hibberdlab.com/transrate/">TransRate</a></h4>
+						<img data-src="http://hibberdlab.com/transrate/assets/themes/leap-day/images/mainlogo.png">
+						<ul>
+							<li class="fragment">Reference free QA of transcript assemblies</li>
+							<li class="fragment">Detects chimeras, structural errors, incomplete assembly parts and base errors.</li>
+							<li class="fragment warn">You MUST use the library used for the assembly</li>
+							<li class="fragment"> Scores greater than 0.22 are acceptable (better than 1/2 of all published transcriptomes at the time of publication).</li>
+						</ul>
+					</section>
+					<section>
+						<img class="stretch" data-src="img/transrate.png"></img>
+					</section>
+					<section>
+						<p>Example command:</p>
+						<pre><code class="bash">
+conda activate orp
+transrate \
+  --assembly=~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
+  --left=~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_1.fq.gz \
+  --right=~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_2.fq.gz \
+  --threads=4
+						</code></pre>
+					</section>
+				</section>
+			</div>
+		</div>
+		<script src="js/reveal.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				
+				Reveal.addEventListener( 'ready', function( event ) {
+					Reveal.addEventListener( 'slidechanged', function( event ) {
+						console.log(event);
+						if (event.indexh === 7 && event.indexv === 3){
+							window.dispatchEvent(new Event('resize'));
+						}
+					});
+				});
+			});
+		</script>
+		<script>
+				// More info about config & dependencies:
+				// - https://github.com/hakimel/reveal.js#configuration
+				// - https://github.com/hakimel/reveal.js#dependencies
+				Reveal.initialize({
+					math: {
+						mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+						config: 'TeX-AMS_HTML-full'
+					},
+					dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+										//					{ src: 'plugin/highlight/highlight.js', async: true },
+					{ src: 'plugin/math/math.js', async: true }
+					],
+					history: true,
+					// The "normal" size of the presentation, aspect ratio will be preserved
+					// when the presentation is scaled to fit different resolutions. Can be
+					// specified using percentage units.
+					width: 960,
+					height: 700,
+					// Factor of the display size that should remain empty around the content
+					margin: 0.1,
+					// Bounds for smallest/largest possible scale to apply to content
+					minScale: 0.2,
+					maxScale: 1.5
+				});
+		</script>
+	</body>
+</html>
