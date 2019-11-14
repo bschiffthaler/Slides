@@ -64,41 +64,6 @@
 				</section>
 				<section>
 					<section>
-						<h4><a href="https://busco.ezlab.org/">BUSCO</a> - Benchmarking Universal Single Copy Orthologs</h4>
-						<img data-src="https://busco.ezlab.org/img/BUSCO-logo-3.png">
-						<ul>
-							<li class="fragment">Database of single copy orthologs for ancestral lines</li>
-							<li class="fragment">Expect to find many of these in the assembly</li>
-							<li class="fragment">Expect to not have duplicated matches... unless?</li>
-							<li class="fragment">Scores of >0.75 probably good</li>
-						</ul>
-					</section>
-					<section>
-						<h4>BUSCO output</h4>
-						<pre><code class="plaintext">
-C:98.1%[S:35.7%,D:62.4%],F:0.9%,M:1.0%,n:1375
-
-1349    Complete BUSCOs (C)
-491     Complete and single-copy BUSCOs (S)
-858     Complete and duplicated BUSCOs (D)
-13      Fragmented BUSCOs (F)
-13      Missing BUSCOs (M)
-1375    Total BUSCO groups searched
-						</code></pre>
-					</section>
-					<section>
-						<p>Example command</p>
-						<pre><code class="bash">
-conda activate busco
-run_BUSCO.py \
-  -i ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
-  -c 4 -m tran -o 139.orp \
-  -l /home/orp/share/Day3/reference/embryophyta_odb10
-						</code></pre>
-					</section>
-				</section>
-				<section>
-					<section>
 						<h4><a href="http://deweylab.biostat.wisc.edu/detonate/rsem-eval.html">Detonate</a></h4>
 						<p class="fragment">Computes an assembly quality statistic from raw reads and assembled transcripts</p>
 						<p class="fragment">Can run in reference guided and reference free modes</p>
@@ -109,6 +74,7 @@ run_BUSCO.py \
 						<p>Example command:</p>
 						<p>Step 1</p>
 						<pre><code class="bash">
+conda deactivate
 conda activate detonate
 rsem-eval-estimate-transcript-length-distribution \
   ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
@@ -144,12 +110,49 @@ rsem-eval-calculate-score --bowtie2 -p 4 \
 					<section>
 						<p>Example command:</p>
 						<pre><code class="bash">
+conda deactivate							
 conda activate orp
 transrate \
   --assembly=~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
   --left=~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_1.fq.gz \
   --right=~/share/Day3/writable/bastian/P11562_139_S36_L001_subset_2.fq.gz \
   --threads=4
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h4><a href="https://busco.ezlab.org/">BUSCO</a> - Benchmarking Universal Single Copy Orthologs</h4>
+						<img data-src="https://busco.ezlab.org/img/BUSCO-logo-3.png">
+						<ul>
+							<li class="fragment">Database of single copy orthologs for ancestral lines</li>
+							<li class="fragment">Expect to find many of these in the assembly</li>
+							<li class="fragment">Expect to not have duplicated matches... unless?</li>
+							<li class="fragment">Scores of >0.75 probably good</li>
+						</ul>
+					</section>
+					<section>
+						<h4>BUSCO output</h4>
+						<pre><code class="plaintext">
+C:98.1%[S:35.7%,D:62.4%],F:0.9%,M:1.0%,n:1375
+
+1349    Complete BUSCOs (C)
+491     Complete and single-copy BUSCOs (S)
+858     Complete and duplicated BUSCOs (D)
+13      Fragmented BUSCOs (F)
+13      Missing BUSCOs (M)
+1375    Total BUSCO groups searched
+						</code></pre>
+					</section>
+					<section>
+						<p>Example command</p>
+						<pre><code class="bash">
+conda deactivate							
+conda activate busco
+run_BUSCO.py \
+  -i ~/share/Day3/writable/bastian/assemblies/139.ORP.fasta \
+  -c 4 -m tran -o 139.orp \
+  -l ~/share/Day3/reference/embryophyta_odb10
 						</code></pre>
 					</section>
 				</section>
